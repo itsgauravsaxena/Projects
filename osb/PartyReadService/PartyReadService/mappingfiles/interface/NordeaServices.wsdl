@@ -1,0 +1,297 @@
+<!--
+	IBM-MDMWB-1.0-[1443caa6dd6d222083c462cf5b55f46b]
+--><wsdl:definitions name="NordeaServices" targetNamespace="http://services.ecs.mdm.nordea.com/NordeaServices/port" xmlns:mdmport="http://services.ecs.mdm.nordea.com/NordeaServices/port" xmlns:mdm="http://www.ibm.com/mdm/schema" xmlns:mdmwsdl="http://www.ibm.com/mdm/wsdl/schema" xmlns:jaxws="http://java.sun.com/xml/ns/jaxws" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+	
+	<jaxws:bindings>
+        <jaxws:enableWrapperStyle>false</jaxws:enableWrapperStyle>
+    </jaxws:bindings>
+	<wsdl:types>
+		<xsd:schema targetNamespace="http://services.ecs.mdm.nordea.com/NordeaServices/port" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+		<xsd:import namespace="http://www.ibm.com/mdm/schema" schemaLocation="PhysicalMDM.xsd"/>
+		<xsd:import namespace="http://www.ibm.com/mdm/wsdl/schema" schemaLocation="MDMWSDLCommon.xsd"/>
+
+			<xsd:complexType name="MaintainNordeaPartyInputType">
+			<xsd:sequence>
+				<xsd:element maxOccurs="1" minOccurs="1" ref="mdm:RequestControl"/>
+				<xsd:element maxOccurs="1" minOccurs="1" ref="mdm:NordeaBObj"/>
+			</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="MaintainNordeaPartyOutputType">
+			<xsd:sequence>
+				<xsd:element maxOccurs="1" minOccurs="1" ref="mdm:ResponseControl"/>
+				<xsd:element maxOccurs="1" minOccurs="1" ref="mdm:TxResult"/>
+				<xsd:element maxOccurs="1" minOccurs="1" ref="mdm:NordeaBObj"/>
+			</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="MaintainOrgClassificationInputType">
+			<xsd:sequence>
+				<xsd:element maxOccurs="1" minOccurs="1" ref="mdm:RequestControl"/>
+				<xsd:element maxOccurs="1" minOccurs="1" ref="mdm:OrgClassificationBObj"/>
+			</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="MaintainOrgClassificationOutputType">
+			<xsd:sequence>
+				<xsd:element maxOccurs="1" minOccurs="1" ref="mdm:ResponseControl"/>
+				<xsd:element maxOccurs="1" minOccurs="1" ref="mdm:TxResult"/>
+				<xsd:element maxOccurs="1" minOccurs="1" ref="mdm:OrgClassificationBObj"/>
+			</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="MaintainPartyRiskInputType">
+			<xsd:sequence>
+				<xsd:element maxOccurs="1" minOccurs="1" ref="mdm:RequestControl"/>
+				<xsd:element maxOccurs="1" minOccurs="1" ref="mdm:PartyRiskBObj"/>
+			</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="MaintainPartyRiskOutputType">
+			<xsd:sequence>
+				<xsd:element maxOccurs="1" minOccurs="1" ref="mdm:ResponseControl"/>
+				<xsd:element maxOccurs="1" minOccurs="1" ref="mdm:TxResult"/>
+				<xsd:element maxOccurs="1" minOccurs="1" ref="mdm:PartyRiskBObj"/>
+			</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="MaintainPepRoleInputType">
+			<xsd:sequence>
+				<xsd:element maxOccurs="1" minOccurs="1" ref="mdm:RequestControl"/>
+				<xsd:element maxOccurs="1" minOccurs="1" ref="mdm:PepRoleBObj"/>
+			</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="MaintainPepRoleOutputType">
+			<xsd:sequence>
+				<xsd:element maxOccurs="1" minOccurs="1" ref="mdm:ResponseControl"/>
+				<xsd:element maxOccurs="1" minOccurs="1" ref="mdm:TxResult"/>
+				<xsd:element maxOccurs="1" minOccurs="1" ref="mdm:PepRoleBObj"/>
+			</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="GetNordeaPartyOutputType">
+			<xsd:sequence>
+				<xsd:element maxOccurs="1" minOccurs="1" ref="mdm:ResponseControl"/>
+				<xsd:element maxOccurs="1" minOccurs="1" ref="mdm:TxResult"/>
+				<xsd:element maxOccurs="1" minOccurs="1" ref="mdm:NordeaBObj"/>
+			</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="MaintainNordeaKycAnswerSetInputType">
+			<xsd:sequence>
+				<xsd:element maxOccurs="1" minOccurs="1" ref="mdm:RequestControl"/>
+				<xsd:element maxOccurs="1" minOccurs="1" ref="mdm:NordeaKycAnswerSetBObj"/>
+			</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="MaintainNordeaKycAnswerSetOutputType">
+			<xsd:sequence>
+				<xsd:element maxOccurs="1" minOccurs="1" ref="mdm:ResponseControl"/>
+				<xsd:element maxOccurs="1" minOccurs="1" ref="mdm:TxResult"/>
+				<xsd:element maxOccurs="1" minOccurs="1" ref="mdm:NordeaQuestionnairesBObj"/>
+			</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="GetNordeaPartyKycOutputType">
+			<xsd:sequence>
+				<xsd:element maxOccurs="1" minOccurs="1" ref="mdm:ResponseControl"/>
+				<xsd:element maxOccurs="1" minOccurs="1" ref="mdm:TxResult"/>
+				<xsd:element maxOccurs="1" minOccurs="1" ref="mdm:NordeaQuestionnairesBObj"/>
+			</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="maintainNordeaParty" type="mdmport:MaintainNordeaPartyInputType"/>
+			<xsd:element name="maintainNordeaPartyResponse" type="mdmport:MaintainNordeaPartyOutputType"/>
+			<xsd:element name="maintainOrgClassification" type="mdmport:MaintainOrgClassificationInputType"/>
+			<xsd:element name="maintainOrgClassificationResponse" type="mdmport:MaintainOrgClassificationOutputType"/>
+			<xsd:element name="maintainPartyRisk" type="mdmport:MaintainPartyRiskInputType"/>
+			<xsd:element name="maintainPartyRiskResponse" type="mdmport:MaintainPartyRiskOutputType"/>
+			<xsd:element name="maintainPepRole" type="mdmport:MaintainPepRoleInputType"/>
+			<xsd:element name="maintainPepRoleResponse" type="mdmport:MaintainPepRoleOutputType"/>
+			<xsd:element name="getNordeaParty" type="mdmwsdl:TCRMInquiryInputType"/>
+			<xsd:element name="getNordeaPartyResponse" type="mdmport:GetNordeaPartyOutputType"/>
+			<xsd:element name="maintainNordeaKycAnswerSet" type="mdmport:MaintainNordeaKycAnswerSetInputType"/>
+			<xsd:element name="maintainNordeaKycAnswerSetResponse" type="mdmport:MaintainNordeaKycAnswerSetOutputType"/>
+			<xsd:element name="getNordeaPartyKyc" type="mdmwsdl:TCRMInquiryInputType"/>
+			<xsd:element name="getNordeaPartyKycResponse" type="mdmport:GetNordeaPartyKycOutputType"/>
+			<xsd:element name="processingFault" type="mdmwsdl:ProcessingFaultType"/>
+
+		</xsd:schema>
+	</wsdl:types>
+	
+	<wsdl:message name="ProcessingFault">
+		<wsdl:part element="mdmport:processingFault" name="parameters"/>
+	</wsdl:message>
+
+	<wsdl:message name="MaintainNordeaPartyRequest">
+		<wsdl:part element="mdmport:maintainNordeaParty" name="parameters"/>
+	</wsdl:message>
+	<wsdl:message name="MaintainNordeaPartyResponse">
+		<wsdl:part element="mdmport:maintainNordeaPartyResponse" name="parameters"/>
+	</wsdl:message>
+	
+	<wsdl:message name="MaintainOrgClassificationRequest">
+		<wsdl:part element="mdmport:maintainOrgClassification" name="parameters"/>
+	</wsdl:message>
+	<wsdl:message name="MaintainOrgClassificationResponse">
+		<wsdl:part element="mdmport:maintainOrgClassificationResponse" name="parameters"/>
+	</wsdl:message>
+	
+	<wsdl:message name="MaintainPartyRiskRequest">
+		<wsdl:part element="mdmport:maintainPartyRisk" name="parameters"/>
+	</wsdl:message>
+	<wsdl:message name="MaintainPartyRiskResponse">
+		<wsdl:part element="mdmport:maintainPartyRiskResponse" name="parameters"/>
+	</wsdl:message>
+	
+	<wsdl:message name="MaintainPepRoleRequest">
+		<wsdl:part element="mdmport:maintainPepRole" name="parameters"/>
+	</wsdl:message>
+	<wsdl:message name="MaintainPepRoleResponse">
+		<wsdl:part element="mdmport:maintainPepRoleResponse" name="parameters"/>
+	</wsdl:message>
+	
+	<wsdl:message name="GetNordeaPartyRequest">
+		<wsdl:part element="mdmport:getNordeaParty" name="parameters"/>
+	</wsdl:message>
+	<wsdl:message name="GetNordeaPartyResponse">
+		<wsdl:part element="mdmport:getNordeaPartyResponse" name="parameters"/>
+	</wsdl:message>
+	
+	<wsdl:message name="MaintainNordeaKycAnswerSetRequest">
+		<wsdl:part element="mdmport:maintainNordeaKycAnswerSet" name="parameters"/>
+	</wsdl:message>
+	<wsdl:message name="MaintainNordeaKycAnswerSetResponse">
+		<wsdl:part element="mdmport:maintainNordeaKycAnswerSetResponse" name="parameters"/>
+	</wsdl:message>
+	
+	<wsdl:message name="GetNordeaPartyKycRequest">
+		<wsdl:part element="mdmport:getNordeaPartyKyc" name="parameters"/>
+	</wsdl:message>
+	<wsdl:message name="GetNordeaPartyKycResponse">
+		<wsdl:part element="mdmport:getNordeaPartyKycResponse" name="parameters"/>
+	</wsdl:message>
+	
+
+	<wsdl:portType name="NordeaServicesPortType">
+		<wsdl:operation name="maintainNordeaParty">
+			<wsdl:input message="mdmport:MaintainNordeaPartyRequest"/>
+			<wsdl:output message="mdmport:MaintainNordeaPartyResponse"/>
+			<wsdl:fault message="mdmport:ProcessingFault" name="ProcessingFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="maintainOrgClassification">
+			<wsdl:input message="mdmport:MaintainOrgClassificationRequest"/>
+			<wsdl:output message="mdmport:MaintainOrgClassificationResponse"/>
+			<wsdl:fault message="mdmport:ProcessingFault" name="ProcessingFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="maintainPartyRisk">
+			<wsdl:input message="mdmport:MaintainPartyRiskRequest"/>
+			<wsdl:output message="mdmport:MaintainPartyRiskResponse"/>
+			<wsdl:fault message="mdmport:ProcessingFault" name="ProcessingFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="maintainPepRole">
+			<wsdl:input message="mdmport:MaintainPepRoleRequest"/>
+			<wsdl:output message="mdmport:MaintainPepRoleResponse"/>
+			<wsdl:fault message="mdmport:ProcessingFault" name="ProcessingFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="getNordeaParty">
+			<wsdl:input message="mdmport:GetNordeaPartyRequest"/>
+			<wsdl:output message="mdmport:GetNordeaPartyResponse"/>
+			<wsdl:fault message="mdmport:ProcessingFault" name="ProcessingFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="maintainNordeaKycAnswerSet">
+			<wsdl:input message="mdmport:MaintainNordeaKycAnswerSetRequest"/>
+			<wsdl:output message="mdmport:MaintainNordeaKycAnswerSetResponse"/>
+			<wsdl:fault message="mdmport:ProcessingFault" name="ProcessingFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="getNordeaPartyKyc">
+			<wsdl:input message="mdmport:GetNordeaPartyKycRequest"/>
+			<wsdl:output message="mdmport:GetNordeaPartyKycResponse"/>
+			<wsdl:fault message="mdmport:ProcessingFault" name="ProcessingFault"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	
+	<wsdl:binding name="NordeaServicesHttpBinding" type="mdmport:NordeaServicesPortType">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="maintainNordeaParty">
+			<soap:operation soapAction=""/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="ProcessingFault">
+				<soap:fault name="ProcessingFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="maintainOrgClassification">
+			<soap:operation soapAction=""/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="ProcessingFault">
+				<soap:fault name="ProcessingFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="maintainPartyRisk">
+			<soap:operation soapAction=""/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="ProcessingFault">
+				<soap:fault name="ProcessingFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="maintainPepRole">
+			<soap:operation soapAction=""/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="ProcessingFault">
+				<soap:fault name="ProcessingFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="getNordeaParty">
+			<soap:operation soapAction=""/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="ProcessingFault">
+				<soap:fault name="ProcessingFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="maintainNordeaKycAnswerSet">
+			<soap:operation soapAction=""/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="ProcessingFault">
+				<soap:fault name="ProcessingFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="getNordeaPartyKyc">
+			<soap:operation soapAction=""/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="ProcessingFault">
+				<soap:fault name="ProcessingFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+	
+	<wsdl:service name="NordeaServicesService">
+		<wsdl:port binding="mdmport:NordeaServicesHttpBinding" name="NordeaServicesPort">
+			<soap:address location="http://localhost:9080/MDMWSProvider/MDMService"/>
+		</wsdl:port>
+	</wsdl:service>
+	
+</wsdl:definitions>

@@ -1,0 +1,1071 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Nordea Generator V2013.12.09
+  Service   PartyRead_v1.0 
+  Schema    PartyRead_v1.0.xsd 
+  File      PartyRead_v1.0.wsdl (implicit header)
+  Base-TNS  http://soa.nordea.com/party/partyread  
+  SOALib    ../../../../SOA_Library
+  Operations:
+  - retrieveParty
+    
+  Generated Fri Oct 09 16:31:05 CEST 2015 	
+--><wsdl:definitions name="PartyReadService_v1.0" targetNamespace="http://soa.nordea.com/party/partyread/wsdl/v1.0" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:common="http://common.ntpsoa.nordea.com/common/wsdl/v1" xmlns:svc="http://soa.nordea.com/party/partyread/v1.0" xmlns:sc="http://servicecontext.ntpsoa.nordea.com/object" xmlns:err="http://error.ntpsoa.nordea.com/object/v1" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://soa.nordea.com/party/partyread/wsdl/v1.0">
+	<wsdl:types>
+	
+		<!-- import schemas -->
+		
+	<xs:schema targetNamespace="http://servicecontext.ntpsoa.nordea.com/object" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:annotation>
+        <xs:documentation>
+            The types defined in this XML Schema describes domain
+            objects that contain context information about a service
+            call. Each SOAP message in a Web Service is required to have
+            service context information.
+        </xs:documentation>
+    </xs:annotation>
+
+    <xs:simpleType name="officeMode">
+        <xs:annotation>
+            <xs:documentation>
+                Indicates the location that the user is connecting from.
+                Used only for internal channels (branch, head quarter,
+                etc.)
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="OFFICE"/>
+            <xs:enumeration value="REMOTE"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+
+    <xs:complexType name="testParam">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute name="target" type="xs:string" use="optional">
+                    <xs:annotation>
+                        <xs:documentation>
+                            The layer or component that this test
+                            parameter is intended for. Components are
+                            expected to ignore params targeted at
+                            others. Easily selectable using XPath:
+                            //testParam[@target='mycomponent']
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType name="serviceContext">
+        <xs:annotation>
+            <xs:documentation>
+                Service Context. These data are not business meaningful.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="userId" nillable="false">
+                <xs:annotation>
+                    <xs:documentation>
+                        Identification of the end-user. If no end-user
+                        is present (eg. a batch job), the field may
+                        contain a technical user. Used for logging and
+                        tracing.
+                    </xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="22"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="technicalUserId" nillable="true">
+                <xs:annotation>
+                    <xs:documentation>
+                        Identification of the technical user if
+                        applicable. Used for logging and tracing.
+                    </xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="22"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="sessionId" nillable="false">
+                <xs:annotation>
+                    <xs:documentation>
+                        Unique session ID user session. If no session is
+                        active, the sender should construct a session
+                        id.
+                    </xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="56"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="requestId" nillable="true">
+                <xs:annotation>
+                    <xs:documentation>
+                        Request ID - unique within the session scope for
+                        each specific request
+                    </xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="20"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="applicationId" nillable="false">
+                <xs:annotation>
+                    <xs:documentation>
+                        What application is sending the request. Should
+                        be the id registered in Application Register for
+                        that application.
+                    </xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="10"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="channelId" nillable="true">
+                <xs:annotation>
+                    <xs:documentation>
+                        The channel where this request originated.
+                        Current values: NETBANK, BRANCH, CC
+                        (=ContactCentre).
+                    </xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="10"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="clientType" nillable="false">
+                <xs:annotation>
+                    <xs:documentation>
+                        The type of client. Indicates how the
+                        clientComponent, clientView and clientAction
+                        elements should be interpreted. Currently the
+                        following types are used: RCP,JPF,BPM.
+                    </xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="10"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="clientComponent" nillable="false">
+                <xs:annotation>
+                    <xs:documentation>
+                        The component of the client that the user used
+                        to perform an action.
+                    </xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="255"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="clientComponentVersion" nillable="true">
+                <xs:annotation>
+                    <xs:documentation>
+                        Version number of the client component
+                    </xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="10"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="clientAction" nillable="false">
+                <xs:annotation>
+                    <xs:documentation>
+                        Action performed in the client
+                    </xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="100"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="clientView" nillable="true">
+                <xs:annotation>
+                    <xs:documentation>
+                        UI view that the client action was performed in
+                    </xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="100"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="processInstance" nillable="true">
+                <xs:annotation>
+                    <xs:documentation>
+                        Identification of the process instance if this
+                        request deals with a process implemented in the
+                        BPM Enginge
+                    </xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="10"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="authMethod" nillable="false">
+                <xs:annotation>
+                    <xs:documentation>
+                        Authentication method. Used for logging,
+                        authorisation...
+                    </xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="10"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="officeMode" type="sc:officeMode" nillable="true">
+                <xs:annotation>
+                    <xs:documentation>
+                        Office mode. Used for logging, authorisation...
+                        Set to nil if the location is not known.
+                        Applications will typically assume OFFICE if not
+                        specified.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="userLocation" nillable="true">
+                <xs:annotation>
+                    <xs:documentation>
+                        Location of the end user. Typically this is the
+                        IP number of the client.
+                    </xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="30"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="requestDomain" nillable="true">
+                <xs:annotation>
+                    <xs:documentation>
+                        The system domain that this request refers to.
+                        Typically this means the country that the IDs in
+                        the request belong to, but other such domains
+                        may be relevant. This is called "implementation
+                        id" in the NTP SOA Blueprint. This information
+                        is typically used for routing in the Service
+                        Bus.
+                    </xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="10"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="messageTimeStamp" type="xs:dateTime" nillable="false">
+                <xs:annotation>
+                    <xs:documentation>
+                        Date for when the partner created the message.
+                        Used for (performance) logging and tracing. The
+                        timestamp should NOT be updated on each tier but
+                        carried to identify the time of the original
+                        request. Timezone information MUST be included.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="auditCategory" nillable="true">
+                <xs:annotation>
+                    <xs:documentation>
+                        Client's wish for an audit category for this
+                        request. If the service requires a category with
+                        a longer retention time, the client's wish will
+                        be ignored.
+                    </xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="10"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+
+            <xs:element name="test" type="xs:boolean" nillable="false" default="false">
+                <xs:annotation>
+                    <xs:documentation>
+                        Indicates if this message is a test or not.
+                        Typically used during development to call mock
+                        services or ping test during system test or
+                        production.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="testParams" nillable="true">
+                <xs:annotation>
+                    <xs:documentation>
+                        If Test is set to true, this element could be
+                        used as parameters to indicate which test system
+                        to use or as a direction to test test/mock
+                        services
+                    </xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="testParam" type="sc:testParam" minOccurs="0" maxOccurs="unbounded">
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="accountingUnit" nillable="true">
+                <xs:annotation>
+                    <xs:documentation>
+                        Accounting unit - Clear definition is currently
+                        missing. Added to SOA Framework Version 1.6.1.
+                    </xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="10"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:any minOccurs="0" maxOccurs="unbounded" namespace="##targetNamespace" processContents="lax">
+                <xs:annotation>
+                    <xs:documentation>
+                        Allow future extensions of this type without
+                        breaking existing services
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:any>
+
+        </xs:sequence>
+        <xs:attribute name="schemaVersion" type="xs:string" use="required">
+            <xs:annotation>
+                <xs:documentation>
+                    Identifies the version of this schema used for
+                    creating the Service Context. Currently this should
+                    always be schemaVersion="1.0".
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:anyAttribute processContents="lax"/>
+    </xs:complexType>
+
+    <xs:element name="serviceContext" type="sc:serviceContext">
+        <xs:annotation>
+            <xs:documentation>
+                Element containing service context information
+            </xs:documentation>
+        </xs:annotation>
+    </xs:element>
+
+
+</xs:schema>
+<schema targetNamespace="http://error.ntpsoa.nordea.com/object/v1" elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://error.ntpsoa.nordea.com/object/v1">
+	<element name="error" type="tns:errortype">
+		<annotation>
+			<documentation>Element describing an error.</documentation>
+		</annotation>
+	</element>
+	<element name="errorList">
+		<annotation>
+			<documentation>List of error elements.</documentation>
+		</annotation>
+		<complexType>
+			<sequence>
+				<element ref="tns:error" minOccurs="0" maxOccurs="unbounded"/>
+			</sequence>
+		</complexType>
+	</element>
+	<complexType name="errortype">
+		<sequence>
+			<element name="errorId" type="string">
+				<annotation>
+					<documentation>
+                        Id string describing the error. Presentation layer will use this id to look up an appropriate
+                        error message.
+                    </documentation>
+				</annotation>
+			</element>
+			<element name="message" type="string">
+				<annotation>
+					<documentation>
+                        Short textual description in English of the error. To be used in logs but not presented to end-users.
+                    </documentation>
+				</annotation>
+			</element>
+			<element name="category" type="tns:errorCategory">
+				<annotation>
+					<documentation>The category of the error.</documentation>
+				</annotation>
+			</element>
+			<element name="timestamp" type="dateTime">
+				<annotation>
+					<documentation>Time when the error was detected. Timezone information MUST be included.</documentation>
+				</annotation>
+			</element>
+			<element name="source" type="string" minOccurs="0">
+				<annotation>
+					<documentation>
+                        Indication of where the error occured, shorter and more readable than a stack trace. Typically a
+                        component name or business process identification.
+                    </documentation>
+				</annotation>
+			</element>
+			<element name="stack" type="string" minOccurs="0">
+				<annotation>
+					<documentation>
+                        Stack trace from the exception that indicated the error, if available.
+                    </documentation>
+				</annotation>
+			</element>
+			<element name="errorDetails" minOccurs="0">
+				<annotation>
+					<documentation>
+                        Parameters that further describe the cause or nature of the error, e.g. used for substituting
+                        values into an error message to the end user.
+                    </documentation>
+				</annotation>
+				<complexType>
+					<sequence>
+						<element name="errorDetail" minOccurs="0" maxOccurs="unbounded">
+							<complexType>
+								<sequence>
+									<element name="key" type="string"/>
+									<element name="value" type="string" nillable="true"/>
+								</sequence>
+							</complexType>
+						</element>
+					</sequence>
+				</complexType>
+			</element>
+		</sequence>
+		<attribute name="isLogged" type="boolean" use="optional" default="false">
+			<annotation>
+				<documentation>
+                    Information if this error has been logged, useful for implementing a poklicy of only logging each
+                    error once.
+                </documentation>
+			</annotation>
+		</attribute>
+	</complexType>
+	<simpleType name="errorCategory">
+		<annotation>
+			<documentation>Error categories</documentation>
+		</annotation>
+		<restriction base="string">
+			<enumeration value="APPLICATION"/>
+			<enumeration value="AUTHORISATION"/>
+			<enumeration value="SECURITY"/>
+			<enumeration value="SYSTEM"/>
+		</restriction>
+	</simpleType>
+</schema>
+<xs:schema targetNamespace="http://soa.nordea.com/party/partyread/v1.0" elementFormDefault="qualified" attributeFormDefault="unqualified" xmlns:smv="http://soa.nordea.com/party/partyread/v1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:pbaslib="http://soa.nordea.com/party/partybasiclib/v1.2" xmlns:pconlib="http://soa.nordea.com/party/partycontactinformationlib/v1.1" xmlns:tns="http://error.ntpsoa.nordea.com/object/v1" xmlns:piilib="http://soa.nordea.com/party/partyidentificationinformationlib/v1.1">
+	<xs:import namespace="http://error.ntpsoa.nordea.com/object/v1"/>
+	<xs:import namespace="http://soa.nordea.com/party/partybasiclib/v1.2"/>
+	<xs:import namespace="http://soa.nordea.com/party/partycontactinformationlib/v1.1"/>
+	<xs:import namespace="http://soa.nordea.com/party/partyidentificationinformationlib/v1.1"/>
+	<xs:element name="retrievePartyRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="piilib:partyInternalIdentifierBobj"/>
+				<xs:element ref="smv:businessObjectsForResponseBobj"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="retrievePartyResponse">
+		<xs:complexType>
+			<xs:choice>
+				<xs:element ref="smv:partyResponseBobj"/>
+				<xs:element ref="tns:errorList"/>
+			</xs:choice>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="businessObjectsForResponseBobj">
+		<xs:annotation>
+			<xs:documentation>Defines which businessObjects should be returned in response. If none are filled out - all businessObjects will be returned.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="piilib:partyIdentificationInformationFlag" minOccurs="0"/>
+				<xs:element ref="pbaslib:partyBasicFlag" minOccurs="0"/>
+				<xs:element ref="pconlib:partyContactInformationFlag" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="partyResponseBobj">
+		<xs:annotation>
+			<xs:documentation>Contains the succesful response of businessObjects.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="piilib:partyInternalIdentifierBobj"/>
+				<xs:element ref="piilib:partyIdentificationInformationBobj" minOccurs="0"/>
+				<xs:element ref="pbaslib:partyBasicBobj" minOccurs="0"/>
+				<xs:element ref="pconlib:partyContactInformationBobj" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>
+<xs:schema targetNamespace="http://soa.nordea.com/party/partybasiclib/v1.2" elementFormDefault="qualified" attributeFormDefault="unqualified" xmlns:pbaslib="http://soa.nordea.com/party/partybasiclib/v1.2" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:cdt="http://soalib.nordea.com/sharedacrossdomains/commondatatypes/v5" xmlns:pidlib="http://soa.nordea.com/party/partyidentifierlib/v1.0">
+	<xs:import namespace="http://soalib.nordea.com/sharedacrossdomains/commondatatypes/v5"/>
+	<xs:element name="partyBasicBobj">
+		<xs:annotation>
+			<xs:documentation>BASIC INFORMATION ON AT PARTY</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:choice>
+					<xs:element ref="pbaslib:personBobj" minOccurs="0"/>
+					<xs:element ref="pbaslib:organisationBobj" minOccurs="0"/>
+				</xs:choice>
+				<xs:element ref="pbaslib:partyCountryBobj" minOccurs="0" maxOccurs="50"/>
+				<xs:element ref="pbaslib:partyRoleBobj" minOccurs="0" maxOccurs="10"/>
+				<xs:element ref="pbaslib:partyObservationBobj" minOccurs="0" maxOccurs="100"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="personBobj">
+		<xs:annotation>
+			<xs:documentation>Basic info on a Party with the subtype Person.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="pbaslib:dateOfBirth" minOccurs="0"/>
+				<xs:element ref="pbaslib:deceasedDate" minOccurs="0"/>
+				<xs:element ref="pbaslib:gender" minOccurs="0"/>
+				<xs:element ref="pbaslib:noCitizenshipReason" minOccurs="0"/>
+				<xs:element ref="pbaslib:personNameBobj" minOccurs="0"/>
+				<xs:element ref="pbaslib:occupationBobj" minOccurs="0" maxOccurs="30"/>
+				<xs:element ref="pbaslib:pepStatusBobj" minOccurs="0" maxOccurs="10"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="personNameBobj">
+		<xs:annotation>
+			<xs:documentation>Names for a Party with the subtype Person</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="pbaslib:givenNameOne" minOccurs="0"/>
+				<xs:element ref="pbaslib:givenNameTwo" minOccurs="0"/>
+				<xs:element ref="pbaslib:givenNameThree" minOccurs="0"/>
+				<xs:element ref="pbaslib:givenNameFour" minOccurs="0"/>
+				<xs:element ref="pbaslib:lastName" minOccurs="0"/>
+				<xs:element ref="pbaslib:preferredName" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="occupationBobj">
+		<xs:annotation>
+			<xs:documentation>Types of occupation for a Party with the subtype Person</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="pbaslib:occupationType" minOccurs="0"/>
+				<xs:element ref="pbaslib:occupationText" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="pepStatusBobj">
+		<xs:annotation>
+			<xs:documentation>PEP roles that a party can have and the status of these.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="pbaslib:pepRole" minOccurs="0"/>
+				<xs:element ref="pbaslib:pepCountryCode" minOccurs="0"/>
+				<xs:element ref="pbaslib:validFromDate" minOccurs="0"/>
+				<xs:element ref="pbaslib:validToDate" minOccurs="0"/>
+				<xs:element ref="pbaslib:pepStatusExpiryDate" minOccurs="0"/>
+				<xs:element ref="pbaslib:partyDataSourceType" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="organisationBobj">
+		<xs:annotation>
+			<xs:documentation>Basic info on a Party with the subtype Organisation</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="pbaslib:mainOrganisationType" minOccurs="0"/>
+				<xs:element ref="pbaslib:legalRegistrationDate" minOccurs="0"/>
+				<xs:element ref="pbaslib:legalRegistrationAuthority" minOccurs="0"/>
+				<xs:element ref="pbaslib:legalForm" minOccurs="0"/>
+				<xs:element ref="pbaslib:orgNameBobj" minOccurs="0" maxOccurs="30"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="orgNameBobj">
+		<xs:annotation>
+			<xs:documentation>Names for a Party with the subtype Organisation</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="pbaslib:organisationName" minOccurs="0"/>
+				<xs:element ref="pbaslib:organisationNameType" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="partyCountryBobj">
+		<xs:annotation>
+			<xs:documentation>Specifies a partys different relations to a country (taxationCountry, taxationAgreementCountry, countryOfCitizenship etc.)</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="pbaslib:partyCountryCode" minOccurs="0"/>
+				<xs:element ref="pbaslib:partyCountryCodeType" minOccurs="0"/>
+				<xs:element ref="pbaslib:validFromDate" minOccurs="0"/>
+				<xs:element ref="pbaslib:validToDate" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="partyRoleBobj">
+		<xs:annotation>
+			<xs:documentation>Roles that a party can have towards Nordea (the reason we have a party registered)</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="pbaslib:mainPartyRole" minOccurs="0"/>
+				<xs:element ref="pbaslib:subPartyRole" minOccurs="0"/>
+				<xs:element ref="pbaslib:validFromDate" minOccurs="0"/>
+				<xs:element ref="pbaslib:validToDate" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="partyObservationBobj">
+		<xs:annotation>
+			<xs:documentation>Information regarding the Party you should be observant of when dealing with the Party</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="pbaslib:observationCode" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="dateOfBirth" type="xs:date"/>
+	<xs:element name="deceasedDate" type="xs:date"/>
+	<xs:element name="gender" type="cdt:code"/>
+	<xs:element name="givenNameFour" type="cdt:name"/>
+	<xs:element name="givenNameOne" type="cdt:name"/>
+	<xs:element name="givenNameThree" type="cdt:name"/>
+	<xs:element name="givenNameTwo" type="cdt:name"/>
+	<xs:element name="lastName" type="cdt:name"/>
+	<xs:element name="legalForm" type="cdt:code"/>
+	<xs:element name="legalRegistrationAuthority" type="cdt:nameLong"/>
+	<xs:element name="legalRegistrationDate" type="xs:date"/>
+	<xs:element name="mainOrganisationType" type="cdt:code"/>
+	<xs:element name="mainPartyRole" type="cdt:code"/>
+	<xs:element name="noCitizenshipReason" type="cdt:text"/>
+	<xs:element name="observationCode" type="cdt:code"/>
+	<xs:element name="occupationText" type="cdt:text"/>
+	<xs:element name="occupationType" type="cdt:code"/>
+	<xs:element name="organisationName" type="cdt:nameLong"/>
+	<xs:element name="organisationNameType" type="cdt:code"/>
+	<xs:element name="partyBasicFlag" type="xs:boolean">
+		<xs:annotation>
+			<xs:documentation>1 = BusinessObject included in response. 0 = BusinessObject not included in response.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="partyCountryCode" type="cdt:code5"/>
+	<xs:element name="partyCountryCodeType" type="cdt:code"/>
+	<xs:element name="partyDataSourceType" type="cdt:code"/>
+	<xs:element name="pepCountryCode" type="cdt:code5"/>
+	<xs:element name="pepRole" type="cdt:code"/>
+	<xs:element name="pepStatusExpiryDate" type="xs:date"/>
+	<xs:element name="preferredName" type="cdt:name"/>
+	<xs:element name="validFromDate" type="xs:date"/>
+	<xs:element name="validToDate" type="xs:date"/>
+	<xs:element name="subPartyRole" type="cdt:code"/>
+</xs:schema>
+<xs:schema targetNamespace="http://soa.nordea.com/party/partycontactinformationlib/v1.1" elementFormDefault="qualified" attributeFormDefault="unqualified" xmlns:pconlib="http://soa.nordea.com/party/partycontactinformationlib/v1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:cdt="http://soalib.nordea.com/sharedacrossdomains/commondatatypes/v5" xmlns:pidlib="http://soa.nordea.com/party/partyidentifierlib/v1.0">
+	<xs:import namespace="http://soalib.nordea.com/sharedacrossdomains/commondatatypes/v5"/>
+	<xs:element name="partyContactInformationBobj">
+		<xs:annotation>
+			<xs:documentation>Main business-object for all contact information on a party</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="pconlib:contactInformationBobj" minOccurs="0" maxOccurs="99"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="contactInformationBobj">
+		<xs:annotation>
+			<xs:documentation>The status on a contact information, and the acutal adresse, phone, e-address</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="pconlib:validityStatus" minOccurs="0"/>
+				<xs:element ref="pconlib:contactInformationSecretFlag" minOccurs="0"/>
+				<xs:element ref="pconlib:validFromDate" minOccurs="0"/>
+				<xs:element ref="pconlib:validToDate" minOccurs="0"/>
+				<xs:element ref="pconlib:contactUsageBobj" minOccurs="0" maxOccurs="20"/>
+				<xs:choice>
+					<xs:element ref="pconlib:addressBobj" minOccurs="0"/>
+					<xs:element ref="pconlib:phoneNoBobj" minOccurs="0"/>
+					<xs:element ref="pconlib:e-addressBobj" minOccurs="0"/>
+				</xs:choice>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="contactUsageBobj">
+		<xs:annotation>
+			<xs:documentation>Information on what a contactInformation is used for.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="pconlib:usageType" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="addressBobj">
+		<xs:annotation>
+			<xs:documentation>Structured address information for a party</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="pconlib:streetAddress" minOccurs="0"/>
+				<xs:element ref="pconlib:coName" minOccurs="0"/>
+				<xs:element ref="pconlib:postalCode" minOccurs="0"/>
+				<xs:element ref="pconlib:city" minOccurs="0"/>
+				<xs:element ref="pconlib:addressCountryCode" minOccurs="0"/>
+				<xs:element ref="pconlib:addressType" minOccurs="0"/>
+				<xs:element ref="pconlib:addressUnstructuredBobj" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="addressUnstructuredBobj">
+		<xs:annotation>
+			<xs:documentation>The unstructured contact information as represented in countryspecific backEnd systems</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="pconlib:addressLine1" minOccurs="0"/>
+				<xs:element ref="pconlib:addressLine2" minOccurs="0"/>
+				<xs:element ref="pconlib:addressLine3" minOccurs="0"/>
+				<xs:element ref="pconlib:addressLine4" minOccurs="0"/>
+				<xs:element ref="pconlib:addressLine5" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="phoneNoBobj">
+		<xs:annotation>
+			<xs:documentation>Phone number information for a party</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="pconlib:phoneNumberPresentation" minOccurs="0"/>
+				<xs:element ref="pconlib:countryDialingCode" minOccurs="0"/>
+				<xs:element ref="pconlib:areaCode" minOccurs="0"/>
+				<xs:element ref="pconlib:phoneNumber" minOccurs="0"/>
+				<xs:element ref="pconlib:extension" minOccurs="0"/>
+				<xs:element ref="pconlib:phoneNumberType" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="e-addressBobj">
+		<xs:annotation>
+			<xs:documentation>E-addresses (email, websites, SWIFT address, etc) for a party</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="pconlib:electronicAddress" minOccurs="0"/>
+				<xs:element ref="pconlib:electronicAddressType" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="addressCountryCode" type="cdt:code5"/>
+	<xs:element name="addressLine1" type="cdt:text"/>
+	<xs:element name="addressLine2" type="cdt:text"/>
+	<xs:element name="addressLine3" type="cdt:text"/>
+	<xs:element name="addressLine4" type="cdt:text"/>
+	<xs:element name="addressLine5" type="cdt:text"/>
+	<xs:element name="addressType" type="cdt:code"/>
+	<xs:element name="areaCode" type="cdt:code5"/>
+	<xs:element name="city" type="cdt:name"/>
+	<xs:element name="coName" type="cdt:nameLong"/>
+	<xs:element name="contactInformationSecretFlag" type="xs:boolean"/>
+	<xs:element name="countryDialingCode" type="cdt:code5"/>
+	<xs:element name="electronicAddress" type="cdt:text"/>
+	<xs:element name="electronicAddressType" type="cdt:code"/>
+	<xs:element name="extension" type="cdt:number10"/>
+	<xs:element name="name" type="cdt:name"/>
+	<xs:element name="partyContactInformationFlag" type="xs:boolean">
+		<xs:annotation>
+			<xs:documentation>1 = BusinessObject included in response. 0 = BusinessObject not included in response.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="phoneNumber">
+		<xs:simpleType>
+			<xs:restriction base="xs:token">
+				<xs:maxLength value="16"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="phoneNumberPresentation" type="cdt:text"/>
+	<xs:element name="phoneNumberType" type="cdt:code"/>
+	<xs:element name="postalCode" type="cdt:code"/>
+	<xs:element name="streetAddress" type="cdt:nameLong"/>
+	<xs:element name="usageType" type="cdt:code"/>
+	<xs:element name="validFromDate" type="xs:date"/>
+	<xs:element name="validityStatus" type="xs:boolean"/>
+	<xs:element name="validToDate" type="xs:date"/>
+</xs:schema>
+<xs:schema targetNamespace="http://soa.nordea.com/party/partyidentificationinformationlib/v1.1" elementFormDefault="qualified" attributeFormDefault="unqualified" xmlns:piilib="http://soa.nordea.com/party/partyidentificationinformationlib/v1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:cdt="http://soalib.nordea.com/sharedacrossdomains/commondatatypes/v5">
+	<xs:import namespace="http://soalib.nordea.com/sharedacrossdomains/commondatatypes/v5"/>
+	<xs:element name="partyIdentificationInformationBobj">
+		<xs:annotation>
+			<xs:documentation>A partys identifiers (backendId's and other id's) and information regarding verification of the id.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="piilib:partyInternalIdentifierBobj"/>
+				<xs:element ref="piilib:partyIdentifierBobj" minOccurs="0" maxOccurs="50"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="partyInternalIdentifierBobj">
+		<xs:annotation>
+			<xs:documentation>"Technical/internal" id's used within Nordea to identify a party (backendPartyId's e.g. from UNIKUNDE, KS, ASTERI, KND)</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="piilib:partyInternalId"/>
+				<xs:element ref="piilib:partyInternalIdType"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="partyIdentifierBobj">
+		<xs:annotation>
+			<xs:documentation>Id's used to identify a party. Many are defined by an external part (e.g. Social Security Number, TIN, LEI)</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="piilib:partyId" minOccurs="0"/>
+				<xs:element ref="piilib:partyIdType" minOccurs="0"/>
+				<xs:element ref="piilib:partyIdCountryCode" minOccurs="0"/>
+				<xs:element ref="piilib:identificationMethodType" minOccurs="0"/>
+				<xs:element ref="piilib:identificationDocumentBobj" minOccurs="0" maxOccurs="10">
+					<xs:annotation>
+						<xs:appinfo>FIXED_LENGTH_ARRAY</xs:appinfo>
+					</xs:annotation>
+				</xs:element>
+				<xs:element ref="piilib:electronicIdDocumentationBobj" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="identificationDocumentBobj">
+		<xs:annotation>
+			<xs:documentation>Describes the document used to identify the Party</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="piilib:idDocumentNumber" minOccurs="0"/>
+				<xs:element ref="piilib:idDocumentName" minOccurs="0"/>
+				<xs:element ref="piilib:idDocumentType" minOccurs="0"/>
+				<xs:element ref="piilib:idDocumentDescription" minOccurs="0"/>
+				<xs:element ref="piilib:idDocIssuingAuthority" minOccurs="0"/>
+				<xs:element ref="piilib:idDocIssuingDate" minOccurs="0"/>
+				<xs:element ref="piilib:idDocIssuerCountryCode" minOccurs="0"/>
+				<xs:element ref="piilib:idDocExpiryDate" minOccurs="0"/>
+				<xs:element ref="piilib:idDocStoredCopyReference" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="electronicIdDocumentationBobj">
+		<xs:annotation>
+			<xs:documentation>Describes the electronic documentation used to identify the Party</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="piilib:eIdentificationType" minOccurs="0"/>
+				<xs:element ref="piilib:eIssuer" minOccurs="0"/>
+				<xs:element ref="piilib:eIdCertificateCode" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="eIdCertificateCode" type="cdt:code"/>
+	<xs:element name="eIdentificationType" type="cdt:code"/>
+	<xs:element name="eIssuer" type="cdt:name"/>
+	<xs:element name="idDocExpiryDate" type="xs:date"/>
+	<xs:element name="idDocIssuerCountryCode" type="cdt:code5"/>
+	<xs:element name="idDocIssuingAuthority" type="cdt:name"/>
+	<xs:element name="idDocIssuingDate" type="xs:date"/>
+	<xs:element name="idDocStoredCopyReference" type="cdt:text"/>
+	<xs:element name="idDocumentDescription" type="cdt:text"/>
+	<xs:element name="idDocumentName" type="cdt:name"/>
+	<xs:element name="idDocumentNumber" type="cdt:identifier"/>
+	<xs:element name="idDocumentType" type="cdt:code"/>
+	<xs:element name="identificationMethodType" type="cdt:code"/>
+	<xs:element name="partyId" type="cdt:identifier"/>
+	<xs:element name="partyIdCountryCode" type="cdt:code5"/>
+	<xs:element name="partyIdentificationInformationFlag" type="xs:boolean">
+		<xs:annotation>
+			<xs:documentation>1 = BusinessObject included in response. 0 = BusinessObject not included in response.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="partyIdType" type="cdt:code"/>
+	<xs:element name="partyInternalId" type="cdt:identifier"/>
+	<xs:element name="partyInternalIdType" type="cdt:code"/>
+</xs:schema>
+<xs:schema targetNamespace="http://soalib.nordea.com/sharedacrossdomains/commondatatypes/v5" elementFormDefault="qualified" attributeFormDefault="unqualified" xmlns:cdt="http://soalib.nordea.com/sharedacrossdomains/commondatatypes/v5" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="amountPart" type="cdt:amountPart"/>
+	<xs:complexType name="amount">
+		<xs:sequence>
+			<xs:element ref="cdt:amountPart"/>
+			<xs:element name="currencyCode">
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:maxLength value="3"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="amountPart">
+		<xs:restriction base="xs:decimal">
+			<xs:totalDigits value="18"/>
+			<xs:fractionDigits value="2"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="code">
+		<xs:restriction base="xs:token">
+			<xs:maxLength value="25"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="code5">
+		<xs:restriction base="xs:token">
+			<xs:maxLength value="5"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="identifier">
+		<xs:restriction base="xs:token">
+			<xs:maxLength value="15"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="measure">
+		<xs:restriction base="xs:decimal">
+			<xs:totalDigits value="13"/>
+			<xs:fractionDigits value="6"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="name">
+		<xs:annotation>
+			<xs:documentation>LDM length not used. If longer length is needed use namelong.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="nameLong">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="255"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="note">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="65535"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="numeric">
+		<xs:restriction base="xs:decimal">
+			<xs:totalDigits value="14"/>
+			<xs:fractionDigits value="2"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="percent">
+		<xs:restriction base="xs:decimal">
+			<xs:totalDigits value="10"/>
+			<xs:fractionDigits value="6"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ratio">
+		<xs:restriction base="xs:decimal">
+			<xs:totalDigits value="22"/>
+			<xs:fractionDigits value="14"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="text">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="255"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="number10">
+		<xs:restriction base="xs:integer">
+			<xs:totalDigits value="10"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>
+</wsdl:types>
+
+
+	<!-- common messages -->	
+	<wsdl:message name="ServiceContextMessage">
+		<wsdl:part name="serviceContext" element="sc:serviceContext"/>
+	</wsdl:message>
+	<wsdl:message name="ErrorMessage">
+		<wsdl:part name="error" element="err:error"/>
+	</wsdl:message>
+	
+	<!-- operation messages -->
+	<!-- Operation retrieveParty -->
+	<wsdl:message name="retrievePartyRequestMessage">
+		<wsdl:part element="svc:retrievePartyRequest" name="retrievePartyRequest"/>
+	</wsdl:message>
+	<wsdl:message name="retrievePartyResponseMessage">
+		<wsdl:part element="svc:retrievePartyResponse" name="retrievePartyResponse"/>
+	</wsdl:message>
+	
+	<!-- Service port -->
+	<wsdl:portType name="PartyReadService">
+		<!-- Operation retrieveParty -->
+		<wsdl:operation name="retrieveParty">
+			<wsdl:input message="tns:retrievePartyRequestMessage"/>
+			<wsdl:output message="tns:retrievePartyResponseMessage"/>
+			<wsdl:fault message="tns:ErrorMessage" name="Error"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	
+	<!-- Bindings -->	
+	<wsdl:binding name="PartyReadSOAP" type="tns:PartyReadService">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<!-- Operation retrieveParty -->
+		<wsdl:operation name="retrieveParty">
+			<soap:operation soapAction="retrieveParty"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+				<soap:header message="tns:ServiceContextMessage" part="serviceContext" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Error">
+				<soap:fault name="Error" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="PartyRead">
+		<wsdl:port binding="tns:PartyReadSOAP" name="PartyReadSOAP">
+			<soap:address location="http://localhost:7001/http://soa.nordea.com/party/partyread/v1.0"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>
